@@ -16,7 +16,7 @@ module.exports = function (RED) {
 
       const configFromPayload = JSON.parse(JSON.stringify(msg.ad_config))
       node.url = configFromPayload.url
-      node.baseDN = config.baseDN
+      node.baseDN = config.baseDN || msg.ad_config.baseDN
 
       cUsername = configFromPayload.credentials.username
       cPassword = configFromPayload.credentials.password
