@@ -1,0 +1,104 @@
+<script type="text/javascript">
+  RED.nodes.registerType('query-payload-creds', {
+    category: 'Active Directory',
+    color: '#0E9EFF',
+    defaults: {
+      name: {
+        value: ""
+      },
+      baseDN: {
+        value: ""
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "bridge.png",
+    label: function () {
+      return this.name || "query-payload-creds";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="query-payload-creds">
+
+  <hr>
+  <h4>Node Configuration</h4>
+  <hr>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <hr>
+  <h5>Active Directory</h5>
+  <hr>
+
+
+  <div class="form-row">
+    <label for="node-input-baseDN"><i class="icon-tag"></i> Base DN</label>
+    <input type="text" id="node-input-baseDN" placeholder="dc=domain,dc=com (optional)">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="query-payload-creds">
+  <p>Connects to a Microsoft Active Directory and returns the result of the AD query input set in <code>msg.payload</code>.</p>
+
+  <h3>Inputs</h3>
+  <ol class="node-ports">
+    <dl class="message-properties">
+      <dt>payload
+        <span class="property-type">string | buffer</span>
+      </dt>
+      <dd> <code>msg.payload</code>: an Active Directory query </dd>
+    </dl>
+    <dl class="message-properties">
+      <dt>ad_config <i>(required)</i>
+        <span class="property-type">JSON object</span>
+      </dt>
+      <dd>The attributes we want to return for users and groups. By default, if not set, the following attributes are returned for users and groups:</p>
+        <p><b>url</b> - ldap://openldap
+        <p><b>credentials</b> - username, password</p>
+      </dd>
+    </dl>
+    <dl class="message-properties">
+      <dt>ad_attributes <i>(optional)</i>
+        <span class="property-type">JSON object</span>
+      </dt>
+      <dd>The attributes we want to return for users and groups. By default, if not set, the following attributes are returned for users and groups:</p>
+        <p><b>user</b> - distinguishedName, userPrincipalName, sAMAccountName, mail, lockoutTime, whenCreated, pwdLastSet, userAccountControl, employeeID, sn, givenName, initials, cn, displayName, comment, description</p>
+        <p><b>group</b> - distinguishedName, objectCategory, cn, description</p>
+      </dd>
+    </dl>
+    <dl class="message-properties">
+      <dt>tlsOptions <i>(optional)</i>
+        <span class="property-type">JSON object</span>
+      </dt>
+      <dd>
+        <p>Additional options passed to TLS connection layer when connecting via <code>ldaps://</code>. (See: <a target="_blank" href="https://nodejs.org/api/tls.html#tls_tls_connect_options_callback">TLS docs for node.js</a>)</p>
+      </dd>
+    </dl>
+  </ol>
+
+
+  <h3>Outputs</h3>
+     <ol class="node-ports">
+         <li>Standard output
+             <dl class="message-properties">
+                 <dt>payload <span class="property-type">string</span></dt>
+                 <dd><code>msg.payload</code>: the standard output of the command, a JSON object that contains result of the AD query input.</dd>
+             </dl>
+         </li>
+         <li>Standard error
+             <dl class="message-properties">
+                 <dt>payload <span class="property-type">string</span></dt>
+                 <dd>the standard error of the command.</dd>
+             </dl>
+         </li>
+     </ol>
+
+  <h3>References</h3>
+    <ul>
+        <li><a href="https://github.com/NoeSamaille/node-red-contrib-activedirectory">GitHub</a> - the nodes github repository</li>
+        <li><a href="https://docs.microsoft.com/en-us/windows/win32/adsi/search-filter-syntax">Microsoft AD Search Filter Syntax</a>
+    </ul>
+</script>
